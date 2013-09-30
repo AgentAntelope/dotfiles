@@ -1,0 +1,102 @@
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+PATH=$PATH:/usr/local/share/npm/bin
+source `brew --prefix git`/etc/bash_completion.d/git-completion.bash
+
+export MARKPATH=$HOME/.marks
+
+function jump {
+    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+}
+
+function mark {
+    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
+}
+
+function unmark {
+    rm -i "$MARKPATH/$1"
+}
+
+function marks {
+    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9- | awk -F ' -> ' '{printf "%-10s -> %s\n", $1, $2}'
+}
+
+_jump()
+{
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$( ls $MARKPATH )" -- $cur) )
+}
+complete -F _jump jump
+
+function __git_ps1_temp {
+    local b="$(git symbolic-ref HEAD 2>/dev/null)";
+    if [ -n "$b" ]; then
+        printf " %s " "${b##refs/heads/}";
+    fi
+}
+
+function run_cmd() {
+  echo "Running $@"
+  "$@"
+  local error=$?
+  if [ $error -ge 1 ]; then
+    echo "[error] command exited with status code $error"
+    errors=1
+
+    return 1
+  else
+    return 0
+  fi
+}
+
+function log() {
+  git log -$*
+}
+
+function assumed() {
+  git ls-files -v | grep ^h | cut -c 3-
+  if [ -f `brew --prefix`/etc/bash_completion ]; then
+      . `brew --prefix`/etc/bash_completion
+  fi
+}
+
+function timer_start {
+  timer=${timer:-$SECONDS}
+}
+function timer_stop {
+  timer_show=$(($SECONDS - $timer))
+  unset timer
+}
+trap 'timer_start' DEBUG
+PROMPT_COMMAND=timer_stop
+
+export PS1="\[\e[1;30m\]\${timer_show}s\[\e[0m\]\n\[\e[30;42m\]iMac \W \[\e[30;43m\]\$(__git_ps1_temp)\[\e[0m\] "
+export CLICOLOR=1
+export EDITOR="subl -w"
+
+alias ..='cd ..'
+alias bi='bundle install -j4' # Needs bundler --pre
+alias be='bundle exec'
+alias ll='ls -al'
+alias gs='git st'
+alias gm='git co master'
+alias gr='git pull --rebase origin master'
+alias gp='git pull'
+alias gdbs='git co -- db/schema.rb'
+alias rs='vssh bundle exec rspec'
+alias vu='vagrant up'
+alias vsu='vagrant suspend'
+alias vst='vagrant status'
+alias vh='vagrant halt'
+alias vr='vagrant suspend && vagrant halt && vagrant up && zeus_restart'
+alias vp='vagrant provision'
+alias lc='grunt less:compile'
+alias cacheclasses='touch config/environments/cache_classes && vssh touch tmp/restart.txt && echo Classes cached.'
+alias uncacheclasses='rm config/environments/cache_classes && vssh touch tmp/restart.txt && echo Classes uncached.'
+alias panic="git co as/panicbranch && git add . && git commit -m 'PANIC COMMIT' && git push -fu"
+alias assume="git update-index --assume-unchanged"
+alias unassume="git update-index --no-assume-unchanged"
+alias clean_git_local="git branch --merged | grep -v '\*' | xargs -n 1 git branch -d"
+alias clean_git_remote="git remote prune origin"
+alias clean_git="clean_git_local && clean_git_remote && git gc"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

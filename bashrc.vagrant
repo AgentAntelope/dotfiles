@@ -1,5 +1,24 @@
-function vssh() {
-  ssh dev.noths.com "cd /var/sites/noths/development && $*"
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+function __git_ps1_temp {
+    local b="$(git symbolic-ref HEAD 2>/dev/null)";
+    if [ -n "$b" ]; then
+        printf " %s " "${b##refs/heads/}";
+    fi
+}
+
+function run_cmd() {
+  echo "Running $@"
+  "$@"
+  local error=$?
+  if [ $error -ge 1 ]; then
+    echo "[error] command exited with status code $error"
+    errors=1
+
+    return 1
+  else
+    return 0
+  fi
 }
 
 function ttv() {
@@ -188,33 +207,55 @@ function qa() {
   ssh notonthehighstreet@qa$*.hq.noths.com
 }
 
-function zeus_restart() {
-  ssh vagrant@dev.noths.com "pgrep zeus | xargs kill -2" 2>/dev/null
-  processes=`ssh vagrant@dev.noths.com "ps -ef | grep zeus | grep -v grep"`
-  if [[ $processes != "" ]]
-  then
-    echo "Something went wrong, killing everything zeus-related"
-    ssh vagrant@dev.noths.com "ps -ef | grep zeus | grep -v grep | awk '{print \$2}' | xargs kill -9"
-    if [ -e /Users/AlexS/sites/noths/www/.zeus.sock ]
-    then
-      echo "Removing .zeus.sock"
-      rm /Users/AlexS/sites/noths/www/.zeus.sock
-    fi
-  fi
-
-  ssh vagrant@dev.noths.com "cd /var/sites/notonthehighstreet/current && zeus start" > /dev/null 2>&1 &
+function log() {
+  git log -$*
 }
 
+function timer_start {
+  timer=${timer:-$SECONDS}
+}
+function timer_stop {
+  timer_show=$(($SECONDS - $timer))
+  unset timer
+}
+trap 'timer_start' DEBUG
+PROMPT_COMMAND=timer_stop
+
+export PS1="\[\e[1;30m\]\${timer_show}s\[\e[0m\]\n\[\e[30;42m\]VAGRANT \W \[\e[30;43m\]\$(__git_ps1_temp)\[\e[0m\] "
+export CLICOLOR=1
 export JENKINS_USERNAME="JENKINS_USERNAME"
 export JENKINS_PASSWORD="JENKINS_PASSWORD"
+export EDITOR="subl -w"
 
-alias noths='cd ~/sites/noths/www/'
-alias ttr='zeus_restart && vssh touch tmp/restart.txt && echo done.'
-alias dev='ssh vagrant@dev.noths.com -t bash'
+alias ..='cd ..'
+alias bi='bundle install -j4'
+alias be='bundle exec'
+alias ll='ls -al'
+alias gs='git st'
+alias gm='git co master'
+alias gr='git pull --rebase origin master'
+alias gp='git pull'
+alias gdbs='git co -- db/schema.rb'
+alias noths='cd /var/sites/notonthehighstreet/current/'
+alias ttr='touch tmp/restart.txt && echo done.'
 alias rs='bundle exec rspec'
-alias rlc='vssh rake less:compile'
-alias plzsphinx='vssh rm log/searchd.development.pid && vssh bundle exec rake thinking_sphinx:start && echo Sorted.'
+alias lc='grunt less:compile'
+alias plzsphinx='rm log/searchd.development.pid && bundle exec rake thinking_sphinx:start && echo Sorted.'
+alias cacheclasses='touch config/environments/cache_classes && touch tmp/restart.txt && echo Classes cached.'
+alias uncacheclasses='rm config/environments/cache_classes && touch tmp/restart.txt && echo Classes uncached.'
 alias startsql='/usr/local/mysql/bin/mysqld --datadir=/usr/local/mysql/data'
+alias panic="git co as/panicbranch && git add . && git commit -m 'PANIC COMMIT' && git push -fu"
+alias assume="git update-index --assume-unchanged"
+alias unassume="git update-index --no-assume-unchanged"
+alias clean_git_local="git branch --merged | grep -v '\*' | xargs -n 1 git branch -d"
+alias clean_git_remote="git remote prune origin"
+alias clean_git="clean_git_local && clean_git_remote && git gc"
+alias dev_tail="tail -f log/development.log"
+alias test_tail="tail -f log/test.log"
+alias run_migrations="bundle exec rake db:migrate db:data:migrate db:test:prepare"
 
+assumed="git ls-files -v | grep ^h | cut -c 3-"
 
 noths
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
