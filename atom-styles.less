@@ -12,40 +12,45 @@
 @mid-gray: #444444;
 @dark-gray: #212224;
 
-.editor {
-  .mini .is-focused {
-    background-color: @dark-gray;
-  }
-  .cursor {
-    border-color: orange;
-  }
-}
-
+// Bold the directories in tree-view
 .icon-file-directory  {
   font-size: 12px;
   font-weight: bold;
 }
 
-.results-view .list-nested-item {
-  border-bottom:1px solid;
-}
-
-.tab-bar .active .title {
-  font-weight: bold;
-}
-
+// Unbold ignore directories
 .status-ignored .icon-file-directory {
   font-weight: normal;
 }
 
-.zen {
-  .editor {
-    width: 800px;
-    margin: 0 auto;
-    margin-top: 40px;
+// Separate file results by a single line
+.results-view .list-nested-item {
+  border-bottom: 1px solid;
+}
+
+.editor {
+  .mini .is-focused {
+    background-color: @dark-gray;
+  }
+  // The cursor's bright
+  .cursor {
+    border-color: orange;
   }
 }
 
+// Bold the active tab
+.tab-bar .active .title {
+  font-weight: bold;
+}
+
+// Make zen 80 character
+.zen {
+  .editor {
+    width: 800px;
+  }
+}
+
+// Fix the fact that the settings view is white/light gray
 .settings-view {
   .config-menu {
     background-color: black;
@@ -88,8 +93,8 @@
 
   .button-area .btn, .btn-default, .btn-group > .btn-default {
     background: @dark-gray;
-    color: @light-gray;
     border: 1px solid black;
+    color: @light-gray;
   }
 
   .btn-default:hover {
@@ -104,16 +109,16 @@
   }
 
   .thumbnail {
-    border: 1px solid black;
     background-color: @dark-gray;
+    border: 1px solid black;
     .package-name {
       color: @light-gray;
     }
   }
 
   .form-control {
-    border: 1px solid black;
     background-color: @dark-gray;
+    border: 1px solid black;
     color: @light-gray;
   }
 }
