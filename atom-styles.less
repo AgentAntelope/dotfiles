@@ -9,10 +9,16 @@
  */
 
 @light-gray: #9E9E9E;
+@mid-gray: #444444;
 @dark-gray: #212224;
 
-.editor .cursor {
-  border-color: orange;
+.editor {
+  .mini .is-focused {
+    background-color: @dark-gray
+  }
+  .cursor {
+    border-color: orange;
+  }
 }
 
 .icon-file-directory  {
@@ -61,17 +67,53 @@
     color: @light-gray;
   }
 
-  .config-menu .nav > li > a {
-    color: @light-gray
+  .config-menu {
+    .nav > li > a {
+      color: @light-gray;
+    }
+
+    .nav > li > a:hover {
+      background-color: @mid-gray;
+    }
   }
 
-  .editor-container .editor.mini {
-    background-color: @dark-gray;
+  .editor-container {
+    .editor.mini{
+      background-color: @dark-gray;
+    }
+    .editor.mini.is-focused {
+      background-color: @mid-gray;
+    }
   }
 
-  .button-area .btn, .btn-default {
+  .button-area .btn, .btn-default, .btn-group > .btn-default {
     background: @dark-gray;
     color: @light-gray;
     border: 1px solid black;
+  }
+
+  .btn-default:hover {
+    background: @mid-gray;
+    color: white;
+  }
+
+  .editor {
+    .is-focused {
+      background-color: @dark-gray;
+    }
+  }
+
+  .thumbnail {
+    border: 1px solid black;
+    background-color: @dark-gray;
+    .package-name {
+      color: @light-gray;
+    }
+  }
+
+  .form-control {
+    border: 1px solid black;
+    background-color: @dark-gray;
+    color: @light-gray;
   }
 }
