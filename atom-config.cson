@@ -4,5 +4,11 @@
 'core':
   'audioBeep': false
   'destroyEmptyPanes': false
+  'useReactEditor': true
 'welcome':
   'showOnStartup': false
+'atom-color-highlight':
+  'hideMarkersInComments': true
+'atom-spotify': # For home use.
+  'showEqualizer': true
+'autosave': {}
