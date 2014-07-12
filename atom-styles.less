@@ -8,6 +8,9 @@
  * http://www.lesscss.org
  */
 
+@light-gray: #9E9E9E;
+@dark-gray: #212224;
+
 .editor .cursor {
   border-color: orange;
 }
@@ -39,26 +42,36 @@
 
 .settings-view {
   .config-menu {
-    background-color: #000000
+    background-color: black;
   }
 
   .panels {
-    background-color: #000000;
+    background-color: black;
   }
-}
 
-.settings-view .settings-panel label {
-  color: #AAAAAA;
-}
+  .settings-panel label {
+    color: @light-gray;
+  }
 
-.settings-view .section .section-heading:first-child {
-  color: #C4C4C4;
-}
+  .section .section-heading:first-child {
+    color: @light-gray;
+  }
 
-.settings-view .text {
-  color: #9E9E9E;
-}
+  .text {
+    color: @light-gray;
+  }
 
-.settings-view .config-menu .nav > li > a {
-  color: #9E9E9E
+  .config-menu .nav > li > a {
+    color: @light-gray
+  }
+
+  .editor-container .editor.mini {
+    background-color: @dark-gray;
+  }
+
+  .button-area .btn, .btn-default {
+    background: @dark-gray;
+    color: @light-gray;
+    border: 1px solid black;
+  }
 }
