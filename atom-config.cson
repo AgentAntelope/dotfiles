@@ -1,0 +1,8 @@
+'editor':
+  'fontSize': 13
+  'showInvisibles': true
+'core':
+  'audioBeep': false
+  'destroyEmptyPanes': false
+'welcome':
+  'showOnStartup': false
