@@ -16,8 +16,14 @@ function unmark {
     rm -i "$MARKPATH/$1"
 }
 
+function longest_mark {
+    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9 | awk ' { if ( length > x ) { x = length; y = $0 } }END{ print y }' | grep -o "." | wc -l | tr -d ' '
+}
+
 function marks {
-    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9- | awk -F ' -> ' '{printf "%-10s -> %s\n", $1, $2}'
+    local longest_mark=$(longest_mark)
+    local printf_string="{printf \"%-"$longest_mark"'s -> %s\n\", \$1, \$2}"
+    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9- | awk -F ' -> ' "{printf \"%-"$longest_mark"s -> %s\n\", \$1, \$2}"
 }
 
 _jump()
