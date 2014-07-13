@@ -49,9 +49,14 @@
   border-bottom: 1px solid;
 }
 
+.select-list.popover-list.autocomplete-plus {
+  // There is a clash between autocomplete-plus and atom-color-highlight
+  z-index: 101 !important
+}
+
 .editor {
   .mini .is-focused {
-    background-color: @dark-gray;
+    background: @dark-gray;
   }
   // The cursor's bright
   .cursor {
@@ -149,5 +154,9 @@
     background-color: @dark-gray;
     border: 1px solid black;
     color: @light-gray;
+  }
+
+  .native-key-bindings.table > tbody > .success > td {
+    background-color: @dark-gray;
   }
 }
