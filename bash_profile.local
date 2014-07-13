@@ -77,7 +77,8 @@ PROMPT_COMMAND=timer_stop
 
 export PS1="\[\e[1;30m\]\${timer_show}s\[\e[0m\]\n\[\e[30;42m\]iMac \W \[\e[30;43m\]\$(__git_ps1_temp)\[\e[0m\] "
 export CLICOLOR=1
-export EDITOR="subl -w"
+export EDITOR="atom"
+export GIT_EDITOR="atom"
 
 alias ..='cd ..'
 alias bi='bundle install -j4' # Needs bundler --pre
