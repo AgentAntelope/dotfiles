@@ -8,9 +8,31 @@
  * http://www.lesscss.org
  */
 
+@import "packages/file-icons/stylesheets/icons";  // to use the defined icons
+
 @light-gray: #9E9E9E;
-@mid-gray: #444444;
-@dark-gray: #212224;
+@mid-gray:   #444444;
+@dark-gray:  #212224;
+
+// .tree-icon { .fa; content: "\f1bb"; } // This is the tree icon I want, but it doesn't work yet.
+.archive-icon { .fa; content: "\f187"; } // This will do for now
+
+
+.icon-file-text[data-name^=".ruby"]:before,
+.icon-file-text[data-name^="Gemfile"]:before,
+.icon-file-text[data-name$=".rb.dist"]:before {
+  .ruby-icon;
+}
+
+.icon-file-text[data-name^=".git"]:before,
+.icon-file-text[data-name^=".git"]:before {
+  .git-icon
+}
+
+.icon-file-text[data-name$=".log"]:before, .icon-file-directory[data-name="log"]:before {
+  // .tree-icon; // Tree is broken :(
+  .archive-icon
+}
 
 // Bold the directories in tree-view
 .icon-file-directory  {
