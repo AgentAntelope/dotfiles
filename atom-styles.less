@@ -70,10 +70,12 @@
 }
 
 // Lighten the active pane
-.panes .tab-bar {
-  background: @dark-gray;
-  .tab-bar {
+.panes {
+  .active .tab-bar {
     background: @mid-gray;
+  }
+  .tab-bar {
+    background: @dark-gray;
   }
 }
 
