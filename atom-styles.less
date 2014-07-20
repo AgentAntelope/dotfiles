@@ -14,9 +14,7 @@
 @mid-gray:   #444444;
 @dark-gray:  #212224;
 
-// .tree-icon { .fa; content: "\f1bb"; } // This is the tree icon I want, but it doesn't work yet.
-.archive-icon { .fa; content: "\f187"; } // This will do for now
-
+.tree-icon { .fa; content: "\f1bb"; }
 
 .icon-file-text[data-name^=".ruby"]:before,
 .icon-file-text[data-name^="Gemfile"]:before,
@@ -29,8 +27,7 @@
 }
 
 .icon-file-text[data-name$=".log"]:before, .icon-file-directory[data-name="log"]:before {
-  // .tree-icon; // Tree is broken :(
-  .archive-icon
+  .tree-icon;
 }
 
 // Bold the directories in tree-view
