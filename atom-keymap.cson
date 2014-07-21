@@ -19,3 +19,7 @@
 
 '.autocomplete-plus input.hidden-input':
   'enter': 'autocomplete-plus:confirm'
+
+'.editor':
+  'f5': 'sort-lines:sort'
+  'shift-f5': 'sort-lines:reverse-sort'
