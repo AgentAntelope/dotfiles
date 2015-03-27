@@ -5,39 +5,44 @@ source `brew --prefix git`/etc/bash_completion.d/git-completion.bash
 export MARKPATH=$HOME/.marks
 
 function jump {
-    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+if [[ $1 = 'back' ]]
+then
+  cd -P "$OLDPWD" 2>/dev/null
+else
+  cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+fi
 }
 
 function mark {
-    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
+if [[ $1 = 'back' ]]
+then
+  echo "'back' has a special meaning to jump, and cannot be used as a mark."
+else
+  mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
+fi
 }
 
 function unmark {
-    rm -i "$MARKPATH/$1"
-}
-
-function longest_mark {
-    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9 | awk ' { if ( length > x ) { x = length; y = $0 } }END{ print y }' | grep -o "." | wc -l | tr -d ' '
+  rm -i "$MARKPATH/$1"
 }
 
 function marks {
-    local longest_mark=$(longest_mark)
-    local printf_string="{printf \"%-"$longest_mark"'s -> %s\n\", \$1, \$2}"
-    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9- | awk -F ' -> ' "{printf \"%-"$longest_mark"s -> %s\n\", \$1, \$2}"
+  ls -l $MARKPATH | awk '{print $9, $10, $11}' | column -t
 }
 
 _jump()
 {
-    local cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$( ls $MARKPATH )" -- $cur) )
+  local cur=${COMP_WORDS[COMP_CWORD]}
+  COMPREPLY=( $(compgen -W "$( ls $MARKPATH )" -- $cur) )
 }
 complete -F _jump jump
+complete -F _jump unmark
 
 function __git_ps1_temp {
-    local b="$(git symbolic-ref HEAD 2>/dev/null)";
-    if [ -n "$b" ]; then
-        printf " %s " "${b##refs/heads/}";
-    fi
+  local b="$(git symbolic-ref HEAD 2>/dev/null)";
+  if [ -n "$b" ]; then
+      printf " %s " "${b##refs/heads/}";
+  fi
 }
 
 function run_cmd() {
@@ -54,10 +59,6 @@ function run_cmd() {
   fi
 }
 
-function log() {
-  git log -$*
-}
-
 function assumed() {
   git ls-files -v | grep ^h | cut -c 3-
   if [ -f `brew --prefix`/etc/bash_completion ]; then
@@ -69,21 +70,22 @@ function timer_start {
   timer=${timer:-$SECONDS}
 }
 function timer_stop {
-  timer_show=$(($SECONDS - $timer))
+  timer_seconds=$(($SECONDS - $timer))
+  timer_date=$(date "+%H:%M %a %d/%m/%y")
+  timer_show="$timer_date | $timer_seconds"
   unset timer
 }
 trap 'timer_start' DEBUG
 PROMPT_COMMAND=timer_stop
 
-export PS1="\[\e[1;30m\]\${timer_show}s\[\e[0m\]\n\[\e[30;42m\]iMac \W \[\e[30;43m\]\$(__git_ps1_temp)\[\e[0m\] "
+export PS1="\[\e[1;30m\]\${timer_show}s\[\e[0m\]\n\[\e[30;42m\]quark | \W \[\e[30;43m\]\$(__git_ps1_temp)\[\e[0m\] "
 export CLICOLOR=1
-export EDITOR="atom"
-export GIT_EDITOR="atom"
 
 alias ..='cd ..'
 alias bi='bundle install -j4' # Needs bundler --pre
 alias be='bundle exec'
 alias ll='ls -al'
+alias g='git'
 alias gs='git st'
 alias gm='git co master'
 alias gr='git pull --rebase origin master'
