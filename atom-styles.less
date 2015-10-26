@@ -8,19 +8,13 @@
  * http://www.lesscss.org
  */
 
-@import "packages/file-icons/stylesheets/icons";  // to use the defined icons
+@import "packages/file-icons/styles/icons";  // to use the defined icons
 
 @light-gray: #9E9E9E;
 @mid-gray:   #444444;
 @dark-gray:  #212224;
 
 .tree-icon { .fa; content: "\f1bb"; }
-
-.icon-file-text[data-name^=".ruby"]:before,
-.icon-file-text[data-name^="Gemfile"]:before,
-.icon-file-text[data-name$=".rb.dist"]:before, {
-  .ruby-icon;
-}
 
 [data-name^=".ruby"]:before,
 [data-name^="Gemfile"]:before,
@@ -56,10 +50,6 @@
   .mini .is-focused {
     background: @dark-gray;
   }
-  // The cursor's bright
-  .cursor {
-    border-color: orange;
-  }
 }
 
 // Bold the active tab
@@ -81,82 +71,5 @@
 .zen {
   .editor {
     width: 800px;
-  }
-}
-
-// Fix the fact that the settings view is white/light gray
-.settings-view {
-  .config-menu {
-    background-color: @dark-gray;
-  }
-
-  .panels {
-    background-color: @dark-gray;
-  }
-
-  .settings-panel label {
-    color: @light-gray;
-  }
-
-  .section .section-heading:first-child {
-    color: @light-gray;
-  }
-
-  .text {
-    color: @light-gray;
-  }
-
-  .config-menu {
-    .nav > li > a {
-      color: @light-gray;
-    }
-
-    .nav > li > a:hover {
-      background-color: @mid-gray;
-    }
-  }
-
-  .editor-container {
-    .editor.mini {
-      background-color: black;
-    }
-    .editor.mini.is-focused {
-      background-color: @mid-gray;
-    }
-  }
-
-  .button-area .btn, .btn-default, .btn-group > .btn-default {
-    background: @dark-gray;
-    border: 1px solid black;
-    color: @light-gray;
-  }
-
-  .btn-default:hover {
-    background: @mid-gray;
-    color: white;
-  }
-
-  .editor {
-    .is-focused {
-      background-color: @dark-gray;
-    }
-  }
-
-  .thumbnail {
-    background-color: @dark-gray;
-    border: 1px solid black;
-    .package-name {
-      color: @light-gray;
-    }
-  }
-
-  .form-control {
-    background-color: @dark-gray;
-    border: 1px solid black;
-    color: @light-gray;
-  }
-
-  .native-key-bindings.table > tbody > .success > td {
-    background-color: @mid-gray;
   }
 }
