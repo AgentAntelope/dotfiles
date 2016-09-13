@@ -1,8 +1,11 @@
+PATH=/usr/local/bin:$PATH
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 PATH=$PATH:/usr/local/share/npm/bin
-source `brew --prefix git`/etc/bash_completion.d/git-completion.bash
+export PATH=$PATH:~/go/bin
 
 export MARKPATH=$HOME/.marks
+export BUNDLER_EDITOR=atom
+export EDITOR=atom
 
 function jump {
 if [[ $1 = 'back' ]]
@@ -81,6 +84,9 @@ PROMPT_COMMAND=timer_stop
 export PS1="\[\e[1;30m\]\${timer_show}s\[\e[0m\]\n\[\e[30;42m\]quark | \W \[\e[30;43m\]\$(__git_ps1_temp)\[\e[0m\] "
 export CLICOLOR=1
 
+export NVM_DIR=~/.nvm
+. $(brew --prefix nvm)/nvm.sh
+
 alias ..='cd ..'
 alias bi='bundle install -j4' # Needs bundler --pre
 alias be='bundle exec'
@@ -88,6 +94,7 @@ alias ll='ls -al'
 alias g='git'
 alias gs='git st'
 alias gm='git co master'
+alias gi='git co integration'
 alias gr='git pull --rebase origin master'
 alias gp='git pull'
 alias gdbs='git co -- db/schema.rb'
@@ -99,5 +106,7 @@ alias unassume="git update-index --no-assume-unchanged"
 alias clean_git_local="git branch --merged | grep -v '\*' | xargs -n 1 git branch -d"
 alias clean_git_remote="git remote prune origin"
 alias clean_git="clean_git_local && clean_git_remote && git gc"
+alias brew_it="brew update && brew upgrade && brew cleanup"
+alias regenerate_ctags='ctags -R -f .tags --exclude=vendor --exclude=.bundle --exclude=node_modules --exclude=log --exclude=tmp'
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
