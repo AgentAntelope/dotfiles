@@ -13,37 +13,39 @@ else
 fi
 }
 
-function mark {
-if [[ $1 = 'back' ]]
-then
-  echo "'back' has a special meaning to jump, and cannot be used as a mark."
-else
-  mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
-fi
-}
-
 function unmark {
   rm -i "$MARKPATH/$1"
+}
+
+function mark {
+  marking_path=$1
+  [ ! -z $marking_path ] || marking_path=$(basename `pwd`)
+  if [[ $1 = 'back' ]]
+  then
+    echo "'back' has a special meaning to jump, and cannot be used as a mark."
+  else
+    if [ ! -L "$MARKPATH/$marking_path" ]
+    then
+      mkdir -p "$MARKPATH"; ln -fs "$(pwd)" "$MARKPATH/$marking_path"
+    else
+      rm -i "$MARKPATH/$marking_path"
+      mkdir -p "$MARKPATH"; ln -fs "$(pwd)" "$MARKPATH/$marking_path"
+    fi
+  fi
 }
 
 function marks {
   ls -l $MARKPATH | awk '{print $9, $10, $11}' | column -t
 }
 
-_jump()
+_markslist()
 {
   local cur=${COMP_WORDS[COMP_CWORD]}
   COMPREPLY=( $(compgen -W "$( ls $MARKPATH )" -- $cur) )
 }
-complete -F _jump jump
-complete -F _jump unmark
-
-function __git_ps1_temp {
-  local b="$(git symbolic-ref HEAD 2>/dev/null)";
-  if [ -n "$b" ]; then
-      printf " %s " "${b##refs/heads/}";
-  fi
-}
+complete -F _markslist jump
+complete -F _markslist unmark
+complete -F _markslist mark
 
 function run_cmd() {
   echo "Running $@"
@@ -81,23 +83,29 @@ PROMPT_COMMAND=timer_stop
 export PS1="\[\e[1;30m\]\${timer_show}s\[\e[0m\]\n\[\e[30;42m\]quark | \W \[\e[30;43m\]\$(__git_ps1_temp)\[\e[0m\] "
 export CLICOLOR=1
 
-alias ..='cd ..'
-alias bi='bundle install -j4' # Needs bundler --pre
-alias be='bundle exec'
-alias ll='ls -al'
-alias g='git'
-alias gs='git st'
-alias gm='git co master'
-alias gr='git pull --rebase origin master'
-alias gp='git pull'
-alias gdbs='git co -- db/schema.rb'
-alias cacheclasses='touch config/environments/cache_classes && vssh touch tmp/restart.txt && echo Classes cached.'
-alias uncacheclasses='rm config/environments/cache_classes && vssh touch tmp/restart.txt && echo Classes uncached.'
-alias panic="git co as/panicbranch && git add . && git commit -m 'PANIC COMMIT' && git push -fu"
+alias ..="cd .."
 alias assume="git update-index --assume-unchanged"
-alias unassume="git update-index --no-assume-unchanged"
-alias clean_git_local="git branch --merged | grep -v '\*' | xargs -n 1 git branch -d"
+alias be="bundle exec"
+alias bi="bundle install -j4"
+alias brew_it="brew update && brew upgrade && brew cleanup"
+alias clean_git_local="git branch --merged | grep -v '*' | grep -v 'master' | xargs -n 1 git branch -d"
 alias clean_git_remote="git remote prune origin"
 alias clean_git="clean_git_local && clean_git_remote && git gc"
-
+alias ctags_this="ctags -R ."
+alias ecs_deploy="bundle exec ecs-deploy deploy"
+alias g="git"
+alias gm="git co master"
+alias gp="git pull"
+alias gr="git pull --rebase origin master"
+alias gs="git status"
+alias gst="git status"
+alias jsc="node"
+alias k="kubectl"
+alias blue="kubectl config use-context blue"
+alias red="kubectl config use-context red"
+alias black="kubectl config use-context black"
+alias ll="ls -al"
+alias morning=". ~/.bash_profile && u sts auth && u auth && u vault auth && black >/dev/null"
+alias u_deploy="git log -1 --pretty=%B | paste -sd \" \" - | sed s/\'//g | xargs -L1 -I MESSAGE u deploy create -d MESSAGE"
+alias unassume="git update-index --no-assume-unchanged"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

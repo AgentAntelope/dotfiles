@@ -1,0 +1,22 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+name = Fell Sunderland
+email = fell.sunderland@gmail.com
+[alias]
+amend = commit --amend
+first = push -u origin HEAD
+cam = commit -am
+co = checkout
+dc = diff --cached
+rec = branch --sort=committerdate
+st = status
+up = pull --rebase --autostash
+[core]
+	excludesfile = /Users/fellsunderland/.gitignore
+[help]
+	autocorrect = 20
+[branch]
+	autosetuprebase = always
+[rebase]
+	autoStash = true
