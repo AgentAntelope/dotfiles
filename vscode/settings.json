@@ -1,0 +1,93 @@
+{
+  "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 16,
+  "files.autoSave": "onFocusChange",
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.formatOnPaste": true,
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "search.smartCase": true,
+  "ruby.rubocop.useBundler": true,
+  "editor.suggest.localityBonus": true,
+  "files.insertFinalNewline": true,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.rulers": [80, 120],
+  "editor.minimap.enabled": false,
+  "ruby.lint": {
+    "rubocop": {
+      "useBundler": true
+    }
+  },
+  "ruby.pathToBundler": "/Users/fell/.rbenv/shims/bundle",
+  "ruby.useBundler": true,
+  "[jsonc]": {},
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
+    "editor.insertSpaces": true,
+    "editor.semanticHighlighting.enabled": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.tabSize": 2,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "ruby.rubocop.executePath": "/Users/fell/.rbenv/shims/",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.accessibilitySupport": "off",
+  "security.workspace.trust.untrustedFiles": "open",
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.minimap.autohide": true,
+  "editor.quickSuggestions": {
+    "comments": "on"
+  },
+  "AllAutocomplete.dontContributeToSelf": true,
+  "editor.stickyScroll.enabled": true,
+  "ruby.format": "rubocop",
+  "editor.formatOnType": true,
+  "circleci.hostUrl": "",
+  "ruby.codeCompletion": "rcodetools",
+  "ruby.intellisense": "rubyLocate",
+  "vscode-pets.petSize": "large",
+  "vscode-pets.petType": "crab",
+  "vscode-pets.theme": "beach",
+  "vscode-pets.throwBallWithMouse": true,
+  "ruby.languageServer": {},
+  "window.zoomLevel": 1,
+  "rubyLsp.enabledFeatures": {
+    "codeActions": true,
+    "diagnostics": true,
+    "documentHighlights": true,
+    "documentLink": true,
+    "documentSymbols": true,
+    "foldingRanges": true,
+    "formatting": true,
+    "hover": true,
+    "inlayHint": true,
+    "onTypeFormatting": true,
+    "selectionRanges": true,
+    "semanticHighlighting": true,
+    "completion": true,
+    "codeLens": true,
+    "definition": true,
+    "workspaceSymbol": true,
+    "signatureHelp": true
+  },
+  "terminal.explorerKind": "external",
+  "terminal.external.osxExec": "iTerm.app",
+  "terminal.integrated.accessibleViewFocusOnCommandExecution": true,
+  "cSpell.userWords": [
+    "CODEOWNERS",
+    "virality",
+    "rubocop",
+    "Fira",
+    "Menlo",
+    "autohide"
+  ]
+}
