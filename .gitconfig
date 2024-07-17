@@ -1,0 +1,25 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Fell Sunderland
+	email = fell@meetcleo.com
+	signingkey = [REDACTED]
+[alias]
+  pushf = push --force-with-lease
+  first = push -u origin head
+  amend = commit --amend
+  noedit = amend --no-edit
+  co = checkout
+  mr = rebase origin/main
+  cb = checkout -b
+  ls = log --oneline
+  fixup = commit --fixup=
+  squashbase = rebase --interactive --autosquah
+  cane = commit --amend --no-edit
+[help]
+	autocorrect = 20
+[rebase]
+	autostash = true
+[commit]
+	gpgsign = true
+[merge]
+	conflictstyle = diff3
